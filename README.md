@@ -1,2 +1,2 @@
 # DeepThinkingGNN
-GNN node/graph classification via logical extrapolation.
+GNN for node/graph classification via logical extrapolation.
