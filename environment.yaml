@@ -1,4 +1,4 @@
-name: your_env
+name: deept
 channels:
   - pyg
   - pytorch
@@ -322,4 +322,4 @@ dependencies:
     - xgboost==2.0.0
     - xlrd==1.2.0
     - yarl==1.9.2
-prefix: /home/users/b/bini/.conda/envs/test_gpu
+prefix: /path/to/your/env/deept
