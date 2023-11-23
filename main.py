@@ -11,6 +11,24 @@ from model.thinking_gnn import GraphThinkingGNN
 import numpy as np
 import random
 
+
+"""
+This script is just the beginning of recall-GNN  for graph classification
+using the MUTAG dataset. It could be a starting point.
+
+The model architecture, GraphThinkingGNN, consists of three main parts:
+1. Projection Layer (p): Transforms input node features using Graph Convolutional Networks (GCN).
+2. Recurrent Block (r): Applies a stack of GCN layers for capturing graph context over multiple iterations.
+3. Output Head (h): Produces the final graph-level classification using GCN layers.
+
+The idea could be to train the model on a small set of graphs (in this case, MUTAG dataset) and evaluate its
+generalization performance on a larger set. This concept can be extended to node classification tasks on real-world
+datasets, exploring the GNN's ability to generalize.
+
+Feel free to change whatever needs to be changed.
+"""
+
+
 SEED=71
 # Set random seed for PyTorch
 torch.manual_seed(SEED)
