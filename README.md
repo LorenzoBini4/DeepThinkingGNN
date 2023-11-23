@@ -12,14 +12,20 @@ GNN for node/graph classification via logical extrapolation.
 
 ## Installation
 
-Changing .conda prefix
+Changing *prefix: /path/to/your/env/deept* in yaml file:
 ```bash
 conda env create -f environment.yaml
 conda activate deept
 ```
 
-Otherwise clone the repository:
+Otherwise cloninig the repository:
 
 ```bash
 git clone https://github.com/LorenzoBini4/DeepThinkingGNN.git
 cd DeepThinkingGNN
+```
+Via requirements
+```bash
+pip install -r requirements.txt
+
+
