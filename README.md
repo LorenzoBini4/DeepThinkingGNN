@@ -18,7 +18,7 @@ conda env create -f environment.yaml
 conda activate deept
 ```
 
-. Or clone the repository:
+Otherwise clone the repository:
 
 ```bash
 git clone https://github.com/LorenzoBini4/DeepThinkingGNN.git
