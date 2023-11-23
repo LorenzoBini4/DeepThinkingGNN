@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch_geometric.nn import GCNConv, global_mean_pool
@@ -64,3 +65,5 @@ class GraphThinkingGNN(nn.Module):
         # Global pooling for aggregation
         x = global_mean_pool(x, data.batch)
         return x
+
+
