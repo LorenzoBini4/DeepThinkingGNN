@@ -12,7 +12,7 @@ GNN for node/graph classification via logical extrapolation.
 
 ## Installation
 
-Changing *prefix: /path/to/your/env/deept* in yaml file:
+Changing "*prefix: /path/to/your/env/deept*" in .yaml file:
 ```bash
 conda env create -f environment.yaml
 conda activate deept
