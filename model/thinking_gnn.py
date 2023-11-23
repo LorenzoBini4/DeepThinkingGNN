@@ -41,14 +41,14 @@ class GraphThinkingGNN(nn.Module):
             x = F.relu(x)  # Add ReLU here
             x = nn.Dropout(p=0.4)(x)
         
-        # Training recurrence (with concatenation)
+        # Training recurrence (with recall concatenation)
         if is_training:
-            num_iterations = 1
+            train_iterations = 1
             x = self.recurrent_block_iterations(x, orig_feats, edge_index, num_iterations)
             x = F.relu(x)  # Add ReLU here
             x = nn.Dropout(p=0.4)(x)
         
-        # Testing recurrence (no concatenation)
+        # Testing recurrence (with recall concatenation)
         if not is_training:
             test_iterations = 3
             x = self.recurrent_block_iterations(x, orig_feats, edge_index, test_iterations)
