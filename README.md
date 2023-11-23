@@ -29,6 +29,6 @@ Via requirements
 pip install -r requirements.txt
 ````
 
-## RUN
+## Run
 python main.py
 
