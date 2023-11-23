@@ -1,14 +1,11 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch_geometric.nn import GCNConv, global_mean_pool
-from torch_geometric.datasets import TUDataset
-from torch_geometric.loader import DataLoader
 from torch.utils.data import random_split
-import random
-import numpy as np
+from data.dataloader import create_data_loaders
+from model.thinking_gnn import GraphThinkingGNN
 
-SEED=71
+SEED = 71
 # Set random seed for PyTorch
 torch.manual_seed(SEED)
 
@@ -23,10 +20,6 @@ np.random.seed(SEED)
 # Set random seed for Python built-in random module
 random.seed(SEED)
 
-
-# Load MUTAG dataset
-dataset = TUDataset(root="C:\\Users\\bini\\Desktop\\DeepTGNN", name='MUTAG')
-
 # Check if GPU is available
 if torch.cuda.is_available():
     # If GPU is available, use it; otherwise, use CPU
@@ -35,87 +28,6 @@ if torch.cuda.is_available():
 else:
     DEVICE = torch.device("cpu")
     print("GPU is not available. Using CPU.")
-
-# Define the sizes for train, val, and test sets
-train_size = int(0.8 * len(dataset))
-val_size = int(0.1 * len(dataset))
-test_size = len(dataset) - train_size - val_size
-
-# Split the dataset
-train_dataset, val_dataset, test_dataset = random_split(dataset, [train_size, val_size, test_size])
-
-# Print the number of graphs in each set
-print(f"Number of graphs in the training set: {len(train_dataset)}")
-print(f"Number of graphs in the validation set: {len(val_dataset)}")
-print(f"Number of graphs in the test set: {len(test_dataset)}")
-
-# Move the data loaders to the selected device
-train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True, pin_memory=True, num_workers=0)
-val_loader = DataLoader(val_dataset, batch_size=64, shuffle=True, pin_memory=True, num_workers=0)
-test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False, pin_memory=True, num_workers=0)
-
-class GraphThinkingGNN(nn.Module):
-    def __init__(self, in_channels, hidden_channels, out_channels, num_projection_layers=1, num_recurrent_layers=4, num_output_layers=2):
-        super(GraphThinkingGNN, self).__init__()
-        
-        # Projection layer (p)
-        self.projection = self.make_layers(in_channels, hidden_channels, num_projection_layers)
-        
-        # Recurrent block (r)
-        self.recurrent_block = self.make_layers(hidden_channels, hidden_channels, num_recurrent_layers)
-        
-        # Output head (h)
-        self.output_head = self.make_layers(hidden_channels + in_channels, out_channels, num_output_layers)
-    
-    def make_layers(self, in_channels, out_channels, num_layers):
-        layers = []
-        for _ in range(num_layers):
-            layers.append(GCNConv(in_channels, out_channels))
-            # You can add other layers if needed, such as BatchNorm, Dropout, etc.
-            in_channels = out_channels  # Update in_channels for the next layer
-        return nn.Sequential(*layers)
-    
-    def recurrent_block_iterations(self, x, orig_feats, edge_index, num_iterations):
-        for _ in range(num_iterations):
-            for layer in self.recurrent_block:
-                x = layer(x, edge_index)
-                x = F.relu(x)  # Add ReLU here
-        x = torch.cat([x, orig_feats], dim=1)
-        return x
-    
-    def forward(self, data, is_training=True):
-        orig_feats = data.x
-        x, edge_index = data.x, data.edge_index
-        
-        # Projection layer (p)
-        for layer in self.projection:
-            x = layer(x, edge_index)
-            x = F.relu(x)  # Add ReLU here
-            x = nn.Dropout(p=0.4)(x)
-        
-        # Training recurrence (with concatenation)
-        if is_training:
-            num_iterations = 1
-            x = self.recurrent_block_iterations(x, orig_feats, edge_index, num_iterations)
-            x = F.relu(x)  # Add ReLU here
-            x = nn.Dropout(p=0.4)(x)
-        
-        # Testing recurrence (no concatenation)
-        if not is_training:
-            test_iterations = 3
-            x = self.recurrent_block_iterations(x, orig_feats, edge_index, test_iterations)
-            x = F.relu(x)  # Add ReLU here
-            x = nn.Dropout(p=0.4)(x)
-        
-        # Output head (h)
-        for layer in self.output_head:
-            x = layer(x, edge_index)
-            x = F.relu(x)  # Add ReLU here
-            x = nn.Dropout(p=0.4)(x)
-        
-        # Global pooling for aggregation
-        x = global_mean_pool(x, data.batch)
-        return x
 
 # Initialize the model
 model = GraphThinkingGNN(in_channels=dataset.num_node_features, hidden_channels=128, out_channels=2).to(DEVICE)
@@ -130,6 +42,9 @@ detach_interval = 75  # Adjust as needed
 # counter = 0  # Counter for the number of epochs with no improvement
 
 if __name__ == '__main__':
+    # Create data loaders
+    train_loader, val_loader, test_loader = create_data_loaders()
+
     # Training loop
     for epoch in range(num_epochs):
         model.train()
