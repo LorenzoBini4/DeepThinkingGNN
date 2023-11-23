@@ -8,6 +8,33 @@ from torch_geometric.loader import DataLoader
 from torch.utils.data import random_split
 from data.dataloader import create_data_loaders
 from model.thinking_gnn import GraphThinkingGNN
+import numpy as np
+import random
+
+SEED=71
+# Set random seed for PyTorch
+torch.manual_seed(SEED)
+
+# Set random seed for CUDA (if available)
+if torch.cuda.is_available():
+    torch.cuda.manual_seed(SEED)
+    torch.cuda.manual_seed_all(SEED)
+
+# Set random seed for NumPy
+np.random.seed(SEED)
+
+# Set random seed for Python built-in random module
+random.seed(SEED)
+
+# Check if GPU is available
+if torch.cuda.is_available():
+    # If GPU is available, use it; otherwise, use CPU
+    DEVICE = torch.device("cuda")
+    print("GPU is available.")
+else:
+    DEVICE = torch.device("cpu")
+    print("GPU is not available. Using CPU.")
+
 
 # main function
 def main():
@@ -26,7 +53,7 @@ def main():
 
     # Initialize model
     model = GraphThinkingGNN(
-        in_channels=train_loader.dataset.num_node_features,
+        in_channels=train_loader.dataset[0].num_node_features,
         hidden_channels=128,
         out_channels=2,
         num_projection_layers=args.num_projection_layers,
