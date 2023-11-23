@@ -16,7 +16,7 @@ def main():
     parser.add_argument('--num_projection_layers', type=int, default=1, help='Number of projection layers')
     parser.add_argument('--num_recurrent_layers', type=int, default=4, help='Number of recurrent layers')
     parser.add_argument('--num_output_layers', type=int, default=2, help='Number of output layers')
-    parser.add_argument('--num_iterations', type=int, default=1, help='Number of iterations for training recurrence')
+    parser.add_argument('--train_iterations', type=int, default=1, help='Number of iterations for training recurrence')
     parser.add_argument('--test_iterations', type=int, default=3, help='Number of iterations for testing recurrence')
 
     args = parser.parse_args()
