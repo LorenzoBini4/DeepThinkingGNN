@@ -12,9 +12,10 @@ GNN for node/graph classification via logical extrapolation.
 
 ## Installation
 
+Changing .conda prefix
 ```bash
 conda env create -f environment.yaml
-conda activate graphthinkinggnn
+conda activate deept
 ```
 
 . Or clone the repository:
