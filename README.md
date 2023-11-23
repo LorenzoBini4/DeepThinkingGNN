@@ -13,14 +13,12 @@ GNN for node/graph classification via logical extrapolation.
 ## Installation
 
 ```bash
-pip install -r requirements.txt
-
+conda env create -f environment.yaml
+conda activate graphthinkinggnn
 ```
 
-## Installation
-
-1. Clone the repository:
+. Or clone the repository:
 
 ```bash
 git clone https://github.com/LorenzoBini4/DeepThinkingGNN.git
-cd GraphThinkingGNN
+cd DeepThinkingGNN
