@@ -14,3 +14,13 @@ GNN for node/graph classification via logical extrapolation.
 
 ```bash
 pip install -r requirements.txt
+
+```
+
+## Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/LorenzoBini4/DeepThinkingGNN.git
+cd GraphThinkingGNN
