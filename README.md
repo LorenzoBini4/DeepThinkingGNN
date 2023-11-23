@@ -27,5 +27,8 @@ cd DeepThinkingGNN
 Via requirements
 ```bash
 pip install -r requirements.txt
+````
 
+## RUN
+python main.py
 
