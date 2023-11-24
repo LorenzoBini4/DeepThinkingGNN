@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from torch_geometric.nn import GCNConv, global_mean_pool
 
 class GraphThinkingGNN(nn.Module):
-    def __init__(self, in_channels, hidden_channels, out_channels, num_projection_layers=1, num_recurrent_layers=4, num_output_layers=2):
+    def __init__(self, in_channels, hidden_channels, out_channels, num_projection_layers, num_recurrent_layers, num_output_layers):
         super(GraphThinkingGNN, self).__init__()
         
         # Projection layer (p)
