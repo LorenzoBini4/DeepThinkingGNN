@@ -13,8 +13,8 @@ def create_data_loaders():
     dataset_path = os.path.join(current_directory, dataset_name)
     dataset = TUDataset(root=dataset_path, name=dataset_name)
 
-    train_size = int(0.8 * len(dataset))
-    val_size = int(0.1 * len(dataset))
+    train_size = int(0.3 * len(dataset))
+    val_size = int(0.2 * len(dataset))
     test_size = len(dataset) - train_size - val_size
 
     train_dataset, val_dataset, test_dataset = random_split(dataset, [train_size, val_size, test_size])
