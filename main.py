@@ -25,6 +25,7 @@ The idea could be to train the model on a small set of graphs (in this case, MUT
 generalization performance on a larger set (here I randomly split 30/20/50). This concept can be extended to node classification tasks on real-world
 datasets, exploring the GNN's ability to generalize.
 
+I haven't tuned any hyperparameters yet.
 Feel free to change whatever needs to be changed.
 """
 
