@@ -22,7 +22,7 @@ The model architecture, GraphThinkingGNN, consists of three main parts:
 3. Output Head (h): Produces the final graph-level classification using GCN layers.
 
 The idea could be to train the model on a small set of graphs (in this case, MUTAG dataset) and evaluate its
-generalization performance on a larger set. This concept can be extended to node classification tasks on real-world
+generalization performance on a larger set (here I randomly split 30/20/50). This concept can be extended to node classification tasks on real-world
 datasets, exploring the GNN's ability to generalize.
 
 Feel free to change whatever needs to be changed.
@@ -91,7 +91,7 @@ def main():
         for batch in train_loader:
             batch = batch.to(DEVICE)
             optimizer.zero_grad()
-            output = model(batch, is_training=True)
+            output = model(batch, num_iterations=args.train_iterations, is_training=True)
             loss = criterion(output, batch.y)
             loss.backward()
             optimizer.step()
@@ -108,7 +108,7 @@ def main():
     with torch.no_grad():
         for batch in test_loader:
             batch = batch.to(DEVICE)
-            output = model(batch, is_training=False)
+            output = model(batch, num_iterations=args.test_iterations, is_training=False)
 
             # Get the predicted labels
             _, predicted_labels = torch.max(output, 1)
