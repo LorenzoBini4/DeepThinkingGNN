@@ -32,7 +32,7 @@ class GraphThinkingGNN(nn.Module):
         x = torch.cat([x, orig_feats], dim=1)
         return x
     
-    def forward(self, data, is_training=True):
+    def forward(self, data, num_iterations=1, is_training=True):
         orig_feats = data.x
         x, edge_index = data.x, data.edge_index
         
@@ -44,15 +44,13 @@ class GraphThinkingGNN(nn.Module):
         
         # Training recurrence (with recall concatenation)
         if is_training:
-            train_iterations = 1
-            x = self.recurrent_block_iterations(x, orig_feats, edge_index, train_iterations)
+            x = self.recurrent_block_iterations(x, orig_feats, edge_index, num_iterations)
             x = F.relu(x)  # Add ReLU here
             x = nn.Dropout(p=0.4)(x)
         
         # Testing recurrence (with recall concatenation)
         if not is_training:
-            test_iterations = 3
-            x = self.recurrent_block_iterations(x, orig_feats, edge_index, test_iterations)
+            x = self.recurrent_block_iterations(x, orig_feats, edge_index, num_iterations)
             x = F.relu(x)  # Add ReLU here
             x = nn.Dropout(p=0.4)(x)
         
