@@ -31,5 +31,5 @@ pip install -r requirements.txt
 
 ## Run
 ```bash
-python3 main.py --num_projection_layers 2 --num_recurrent_layers 4 --num_output_layers 2 --train_iterations 2 --test_iterations 3
+python3 -u main.py --num_projection_layers 1 --num_recurrent_layers 4 --num_output_layers 1 --train_iterations 20 --test_iterations 80
 ```
