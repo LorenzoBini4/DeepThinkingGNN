@@ -28,7 +28,7 @@ class GraphThinkingGNN(nn.Module):
         for _ in range(num_iterations):
             for layer in self.recurrent_block:
                 x = layer(x, edge_index)
-                x = F.relu(x)  # Add ReLU here
+                x = F.relu(x)  
         x = torch.cat([x, orig_feats], dim=1)
         return x
     
@@ -39,7 +39,7 @@ class GraphThinkingGNN(nn.Module):
         # Projection layer (p)
         for layer in self.projection:
             x = layer(x, edge_index)
-            x = F.relu(x)  # Add ReLU here
+            x = F.relu(x)  
             x = nn.Dropout(p=0.4)(x)
         
         # Training recurrence (with recall concatenation)
@@ -51,13 +51,13 @@ class GraphThinkingGNN(nn.Module):
         # Testing recurrence (with recall concatenation)
         if not is_training:
             x = self.recurrent_block_iterations(x, orig_feats, edge_index, num_iterations)
-            x = F.relu(x)  # Add ReLU here
+            x = F.relu(x)  
             x = nn.Dropout(p=0.4)(x)
         
         # Output head (h)
         for layer in self.output_head:
             x = layer(x, edge_index)
-            x = F.relu(x)  # Add ReLU here
+            x = F.relu(x)  
             x = nn.Dropout(p=0.4)(x)
         
         # Global pooling for aggregation
