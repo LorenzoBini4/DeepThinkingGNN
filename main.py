@@ -11,7 +11,6 @@ from model.thinking_gnn import GraphThinkingGNN
 import numpy as np
 import random
 
-
 """
 This script is just the beginning of recall-GNN  for graph classification
 using the MUTAG dataset. It could be a starting point.
@@ -29,33 +28,22 @@ I haven't tuned any hyperparameters yet.
 Feel free to change whatever needs to be changed.
 """
 
-
 SEED=71
-# Set random seed for PyTorch
+# Set random seed 
 torch.manual_seed(SEED)
-
-# Set random seed for CUDA (if available)
 if torch.cuda.is_available():
     torch.cuda.manual_seed(SEED)
     torch.cuda.manual_seed_all(SEED)
-
-# Set random seed for NumPy
 np.random.seed(SEED)
-
-# Set random seed for Python built-in random module
 random.seed(SEED)
 
-# Check if GPU is available
 if torch.cuda.is_available():
-    # If GPU is available, use it; otherwise, use CPU
     DEVICE = torch.device("cuda")
     print("GPU is available.")
 else:
     DEVICE = torch.device("cpu")
     print("GPU is not available. Using CPU.")
 
-
-# main function
 def main():
     # prompting number of layers
     parser = argparse.ArgumentParser(description='GraphThinkingGNN')
@@ -85,7 +73,7 @@ def main():
 
     # Training loop
     num_epochs = 100
-    detach_interval = 75  # Adjust as needed
+    detach_interval = 75  
 
     for epoch in range(num_epochs):
         model.train()
@@ -101,8 +89,8 @@ def main():
             if epoch % detach_interval == 0:
                 batch.x.detach_()
 
-    # Evaluation loop on the test set
-    model.eval()  # Set the model to evaluation mode
+    # Evaluation
+    model.eval()  
     correct_predictions = 0
     total_samples = 0
 
@@ -113,14 +101,9 @@ def main():
 
             # Get the predicted labels
             _, predicted_labels = torch.max(output, 1)
-
-            # Count the number of correct predictions
             correct_predictions += (predicted_labels == batch.y).sum().item()
-
-            # Count the total number of samples
             total_samples += batch.y.size(0)
 
-    # Calculate accuracy
     accuracy = correct_predictions / total_samples
     print(f"Accuracy on the test set: {accuracy * 100:.2f}%")
 
